@@ -4,6 +4,7 @@ import { authorizedRoles, isAuthenticatedUser } from '../middleware/auth.js';
 const router = express.Router();
 
 router.post("/product/new",isAuthenticatedUser,authorizedRoles("admin"),createProduct);
+// router.post("/product/new",createProduct);
 router.get("/products",getAllProducts);
 router.put("/product/:id",isAuthenticatedUser,updateProduct);
 router.delete("/product/:id",isAuthenticatedUser,deleteProduct);

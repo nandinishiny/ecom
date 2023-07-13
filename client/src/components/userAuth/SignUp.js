@@ -2,30 +2,54 @@ import React, { useState } from 'react'
 import {AiOutlineEyeInvisible} from 'react-icons/ai'
 import {AiOutlineEye} from 'react-icons/ai'
 import {Link} from 'react-router-dom'
+import picnew from '../../assets/picenter.png'
 import axios from 'axios'
+import { newRequest } from './newRequest'
 const SignUp = () => {
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [userName,setUserName] = useState("");
     const [showPassword,setShowPassword]=useState(false);
+    const [profilePic,setProfilePic]=useState(null);
     const isPasswordVisible =()=>{
         setShowPassword(!showPassword);
     }
-    const registerUser=async(e)=>{
+    // const registerUser=async(e)=>{
+    //     e.preventDefault();
+    //     try {
+    //         await axios.post('http://localhost:3000/api/v1/register',{
+    //         name:userName,
+    //         email,
+    //         password
+    //     })
+    //     alert("registered done");    
+    //     } catch (error) {
+    //         console.log(error)
+            
+    //     }
+    // }
+    const handlePicChange=(e)=>{
+        setProfilePic(e.target.files[0]);
+
+    }
+    const registerUser= async(e)=>{
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3000/api/v1/register',{
-            name:userName,
-            email,
-            password
-        })
-        alert("registered done");    
+            const formData = new FormData();
+            formData.append('name',userName);
+            formData.append('email',email);
+            formData.append('password',password);
+            formData.append('avatar',profilePic);
+            await newRequest.post("/register",formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data',
+                }
+            });
+            alert("signedup successfully")
         } catch (error) {
-            console.log(error)
+            console.log(error);
             
         }
-        
-
     }
   return (
     <div className=' mt-10 flex justify-center  h-screen '>
@@ -58,6 +82,9 @@ const SignUp = () => {
                     {showPassword?<AiOutlineEyeInvisible />:<AiOutlineEye/>}
                 </div>
             </div>
+            <span className='font-bold'>upload profile pic below</span>
+            <label htmlFor="pic"><img src={picnew} alt="" /></label>
+            <input type="file" id='pic' className='hidden' onChange={(e)=>handlePicChange(e)}/>
             <button 
             className='m-2 border p-2 rounded-md bg-red-300 hover:bg-red-400'
             type='submit'> SignUp</button>

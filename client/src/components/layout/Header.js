@@ -7,8 +7,6 @@ import {RiFolderUserFill} from 'react-icons/ri'
 import {BsFillHeartFill} from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { newRequest } from '../userAuth/newRequest'
-import { removeUser } from '../../redux/userSlice'
-
 
 const Header = () => {
   const menuRef = useRef(null);
@@ -16,15 +14,17 @@ const Header = () => {
   const navigate = useNavigate();
   const cart = useSelector((store)=>store.product.items)
   const liked = useSelector((store)=>store.liked.items)
-  const user= useSelector(store=>store?.user?.user)
+  // const user= useSelector(store=>store?.user?.user)
   const [showMenu,setShowMenu] = useState(false)
   // const user = JSON.parse(localStorage.getItem("currentUser"));
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  
   
   useEffect(()=>{
     const handleClickOutside =(e)=>{
       if(menuRef.current && !buttonRef.current.contains(e.target)){
         //&& !menuRef.current.contains(e.target)
+        //e.target means weather click happens or not
         setShowMenu(false)
       }
     }
@@ -35,8 +35,7 @@ const Header = () => {
   },[])
   const logOut=async()=>{
     try {
-      await newRequest.get("/logout");
-      dispatch(removeUser()) 
+      await newRequest.get("/logout"); 
       localStorage.removeItem("currentUser");
       navigate("/");
       

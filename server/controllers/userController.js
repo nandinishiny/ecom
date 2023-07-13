@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
-// import ErrorHandler from "../utils/errorHandler.js";
-import ErrorHandler from "../utils/errorhandler.js";
+import ErrorHandler from "../utils/errorHandler.js";
+// import ErrorHandler from "../utils/errorhandler.js";
 import catchAsyncErrors from "../middleware/catchAsync.js";
 import sendToken from "../utils/jwtToken.js";
 import sendEmail from "../utils/sendEmail.js";
