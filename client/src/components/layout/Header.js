@@ -5,8 +5,11 @@ import {FiSearch} from 'react-icons/fi'
 import {BsCart4} from 'react-icons/bs'
 import {RiFolderUserFill} from 'react-icons/ri'
 import {BsFillHeartFill} from 'react-icons/bs'
+import {FaUserCircle} from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { newRequest } from '../userAuth/newRequest'
+import jwt_decode from "jwt-decode";
+
 
 const Header = () => {
   const menuRef = useRef(null);
@@ -18,7 +21,6 @@ const Header = () => {
   const [showMenu,setShowMenu] = useState(false)
   // const user = JSON.parse(localStorage.getItem("currentUser"));
   // const dispatch = useDispatch();
-  
   
   useEffect(()=>{
     const handleClickOutside =(e)=>{
@@ -56,7 +58,8 @@ const Header = () => {
       <ul className='flex items-center gap-4 sm:gap-6 font-semibold'>
         <li ><Link>Home</Link></li>
         <li ><Link to={'/products'}>Products</Link></li>
-        <li className='hidden sm:block'><Link>About</Link></li>
+        <li className='hidden sm:block'><Link to={"/about"}>About</Link></li>
+        <li><Link to={`/user/orders`}>Orders</Link></li>
         {userInLst && userInLst?.role !=='admin'&&<li className='hidden sm:block'><Link>Contact</Link></li>}
         {userInLst && userInLst?.role ==='admin'&&<li className='bg-pink-500 text-white p-1 rounded-md'>
           <Link to={"/admin"}>Admin Block</Link></li>}
@@ -73,8 +76,8 @@ const Header = () => {
       (<div className='flex items-center justify-between sm:flex-row flex-col sm:gap-2 '>
         <div className='flex flex-col items-center justify-center'>
          <button ref={buttonRef} onClick={()=>setShowMenu(!showMenu)}>
-          <img src="https://yt3.googleusercontent.com/ytc/AGIKgqN11FeTgpZA4iZHLxK-Cv3V-ShfsTrwYvSZyb1G=s176-c-k-c0x00ffffff-no-rj-mo" alt=""
-         className='rounded-full w-10 h-10 relative'  />
+          <img src={userInLst.avatar.url} alt="image"
+          className='rounded-full w-10 h-10 relative'  />
          </button>
          {userInLst.role==="admin"&&<p className='text-sm font-bold'>admin</p>} 
         </div>

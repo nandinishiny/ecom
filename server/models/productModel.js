@@ -37,6 +37,10 @@ const productSchema = new Schema({
         maxLength:[4,"Stock cannot exceed 4 letters"],
         default:1
     },
+    offer:{
+        type:Number,
+        default:5
+    },
     noOfReviews:{
         type:Number,
         default:0
@@ -73,6 +77,17 @@ const productSchema = new Schema({
     },
 
 })
+
+
+// ,
+    // "reviews": [
+    //     {
+    //       "user":"647b385e4fcb7b03e4357aba",
+    //         "name": "nandini",
+    //         "rating": 5,
+    //         "comment": "the very good product"
+    //     }
+    // ]
 
 
 

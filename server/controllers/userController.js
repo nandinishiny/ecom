@@ -6,18 +6,18 @@ import sendToken from "../utils/jwtToken.js";
 import sendEmail from "../utils/sendEmail.js";
 
 export const registerUser = catchAsyncErrors(async(req,res,next)=>{
-    const {name,email,password,role}= req.body;
+    const {name,email,password,role,avatar}= req.body;
+    console.log(avatar);
     const existingUser = await User.findOne({email});
     if(existingUser){
         return next(new ErrorHandler("User already exist ",500));
     }
-    const user = await User.create({name,email,password,role,
-    avatar:{
-        public_id:"this is a sample id",
-        url:"Profile pic url"                              
-    },
+    const user = await User.create({name,email,password,role,avatar});
+    // avatar:{
+    //     public_id:"this is a sample id",
+    //     url:"Profile pic url"                              
+    // },
     
-});
 res.status(201).json({
     success:true,
     user
@@ -136,12 +136,13 @@ export const updateUserPassword = catchAsyncErrors(async(req,res,next)=>{
 
 //update profile --by user --so he wants logged in
 export const updateProfile=catchAsyncErrors(async(req,res,next)=>{
-    const newUserData={
-        name:req.body.name,
-        email:req.body.email,    
-    }
+    // const newUserData={
+    //     name:req.body.name,
+    //     email:req.body.email,    
+    // }
+    console.log(req.body)
     //we will add cloudinary later
-    const user=await User.findByIdAndUpdate(req.user.id,newUserData,{
+    const user = await User.findByIdAndUpdate(req.user.id,req.body,{
         new:true,
         runValidators:true,
         useFindAndModify:false
@@ -150,8 +151,6 @@ export const updateProfile=catchAsyncErrors(async(req,res,next)=>{
         success:true,
         user
     })
-
-
 });
 //Get all users if admin want to see how many users are registered. --by admin
 export const getAllUser= catchAsyncErrors(async(req,res,next)=>{

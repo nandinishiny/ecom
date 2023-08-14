@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {AiOutlineEyeInvisible} from 'react-icons/ai'
 import {AiOutlineEye} from 'react-icons/ai'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import picnew from '../../assets/picenter.png'
 import axios from 'axios'
 import { newRequest } from './newRequest'
@@ -14,38 +14,46 @@ const SignUp = () => {
     const isPasswordVisible =()=>{
         setShowPassword(!showPassword);
     }
-    // const registerUser=async(e)=>{
-    //     e.preventDefault();
-    //     try {
-    //         await axios.post('http://localhost:3000/api/v1/register',{
-    //         name:userName,
-    //         email,
-    //         password
-    //     })
-    //     alert("registered done");    
-    //     } catch (error) {
-    //         console.log(error)
+    const [image,setImage] = useState({});
+    const navigate = useNavigate();
+    const handleImage = async(e,index)=>{
+        const file = e.target.files[0];
+        // const reuploadImages = [];     
+        try {
+            const formData = new FormData();
+            formData.append('file',file);
+            formData.append('upload_preset', 'ecomandcohome');
+            formData.append('folder', 'ecomandco');
+            const res = await axios.post(
+                'https://api.cloudinary.com/v1_1/ecomandco/image/upload',
+                formData
+              );
+              alert("Image is uploaded successfully");
+              const imageObject = {
+                public_id:res.data.public_id,
+                url:res.data.secure_url
+              }
+              setImage(imageObject);
+              console.log(imageObject.url);
+        } catch (error) {
+            console.log(error);
             
-    //     }
-    // }
-    const handlePicChange=(e)=>{
-        setProfilePic(e.target.files[0]);
+        }
 
     }
     const registerUser= async(e)=>{
         e.preventDefault();
         try {
-            const formData = new FormData();
-            formData.append('name',userName);
-            formData.append('email',email);
-            formData.append('password',password);
-            formData.append('avatar',profilePic);
-            await newRequest.post("/register",formData,{
-                headers:{
-                    'Content-Type':'multipart/form-data',
-                }
-            });
-            alert("signedup successfully")
+            const formData = {};
+            formData.name = userName;
+            formData.email=email;
+            formData.password = password;
+            formData.avatar = image;
+            await newRequest.post("/register",formData);
+            console.log(formData.avatar.url);
+            console.log(formData);
+            alert("signedup successfully");
+            navigate("/login")
         } catch (error) {
             console.log(error);
             
@@ -54,7 +62,7 @@ const SignUp = () => {
   return (
     <div className=' mt-10 flex justify-center  h-screen '>
         <form className='flex flex-col items-start w-1/2'
-        onSubmit={(e)=>registerUser(e)} method='post'>
+        onSubmit={registerUser} method='post'>
             <h1 className='m-2 text-xl font-bold'>SignUp Here</h1>
             <input
              type="text"
@@ -84,7 +92,7 @@ const SignUp = () => {
             </div>
             <span className='font-bold'>upload profile pic below</span>
             <label htmlFor="pic"><img src={picnew} alt="" /></label>
-            <input type="file" id='pic' className='hidden' onChange={(e)=>handlePicChange(e)}/>
+            <input type="file" id='pic' className='hidden' onChange={handleImage}/>
             <button 
             className='m-2 border p-2 rounded-md bg-red-300 hover:bg-red-400'
             type='submit'> SignUp</button>

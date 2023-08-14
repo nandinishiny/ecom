@@ -7,6 +7,8 @@ import cors from 'cors'
 import dotenv from 'dotenv';
 import cookieParser from "cookie-parser";
 import orderRouter from "./routes/orderRoute.js";
+import bodyParser from "body-parser";
+import paymentRouter from "./routes/paymentRoute.js";
 dotenv.config({path:"server/config/config.env"})
 mongoConnect().then(console.log(`connected successfully in app`)).catch((e)=>console.log(`the error occusrs ${e}`))
 
@@ -14,13 +16,20 @@ mongoConnect().then(console.log(`connected successfully in app`)).catch((e)=>con
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
-    origin: true,
+    origin: ['http://localhost:1234'],
     credentials: true
   }));
 app.use("/api/v1",productRouter);
 app.use("/api/v1",userRouter);
 app.use("/api/v1",orderRouter);
+app.use("/api/v1",paymentRouter);
+app.get("/api/v1/getkey",(req,res)=>{
+  res.status(200).json({
+    key:"rzp_test_vTeNx7bSuCyyuP"
+  })
+})
 
 
 

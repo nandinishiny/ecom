@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import {AiOutlineHeart} from 'react-icons/ai'
 import {AiFillHeart} from 'react-icons/ai'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../../redux/productSlice';
 import { addToLiked,removeFromLiked} from '../../redux/likedSlice'
 
@@ -22,12 +22,14 @@ const CompleteShoppingCard = (props) => {
     setAddToLiked(false);
     dispatch(removeFromLiked(item));
   }
+  const likedItems = useSelector(state => state.liked.items);
+  const isItemLiked = likedItems.some(item => item._id === _id);
 
   return (
     <div className='sm:w-1/5 w-full m-4 hover:shadow-lg border-0 p-4 justify-around'
      style={{height:"25rem"}}>
         <Link className='flex flex-col items-start gap-2' to={`product/${_id}`}>
-        <img src={images[0].url} alt="" className='w-full h-40 object-contain'/>
+        {images&&<img src={images[0]?.url} alt="" className='w-full h-40 object-contain'/>}
         <h3 className=' text-md font-semibold'
         >{name}</h3>
         <p className='font-xs'>{category}</p>
@@ -44,9 +46,10 @@ const CompleteShoppingCard = (props) => {
         </Link>
         <div className='flex items-center justify-between'>
         <button className=' w-fit p-1 text-center text-xs text-white rounded-sm bg-blue-500 hover:bg-blue-300 ' onClick={()=>addItemToCart(props)}>Add to cart</button>
-        {!addToLikedItem?
+        {/* {!addToLikedItem? */}
+        {!isItemLiked?
         <button onClick={()=>sendToLiked(props)}><AiOutlineHeart className='text-2xl'/></button>:
-        <button onClick={()=>removeFromLikeditems(_id)} ><AiFillHeart className='text-2xl text-pink-500'/>
+        <button onClick={()=>removeFromLikeditems(_id)} ><AiFillHeart className='text-2xl text-pink-500 '/>
         </button>}
         </div>
         

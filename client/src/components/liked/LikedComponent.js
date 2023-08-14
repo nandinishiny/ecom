@@ -9,7 +9,7 @@ const LikedComponent = () => {
         return(<LikedEmpty/>)
     }
   return (
-    <div>
+    <div className='flex flex-wrap justify-around'>
     {likedItems.map((item)=>{
             return(<LikedItem {...item} key={item._id} />)})
     }

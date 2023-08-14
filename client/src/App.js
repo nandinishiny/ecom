@@ -18,6 +18,12 @@ import CreateProducts from "./admin/CreateProducts";
 import Admin from "./admin/Admin";
 import UsersByAdmin from "./admin/UsersByAdmin";
 import ProductCreation from "./admin/ProductCreation";
+// import UpdateProduct from "./admin/UpdateProduct";
+import Order from "./components/Orders/Order";
+import PaymentComponent from "./components/payments/RajorPay";
+import PaymentSuccess from "./components/payments/PaymentSuccess";
+import About from "./components/about/About";
+import UserOrderPage from "./components/Orders/Order";
 const App = ()=>{
     return(
     <>
@@ -84,6 +90,24 @@ export const AppRouter = createBrowserRouter([
             path:'/admin/product/creation',
             element:<ProductCreation/>
         },
+        {
+            path:'/user/orders',
+            element:<UserOrderPage/>
+        },
+        {
+            path:'/payment',
+            element:<PaymentComponent/>
+        },
+        {
+            path:'/payment/success',
+            element:<PaymentSuccess/>
+        },
+        {
+            path:'/about',
+            element:<About/>
+        },
+    
+       
        
        
         

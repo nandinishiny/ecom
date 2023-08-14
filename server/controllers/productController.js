@@ -4,22 +4,46 @@ import catchAsyncErrors from "../middleware/catchAsync.js";
 import ApiFeatures from "../utils/apiFeatures.js";
 
 //--admin route
+// export const createProduct = catchAsyncErrors( async(req,res,next)=>{
+//     req.body.user = req.user.id; //we are assigning the value "user":"user id"
+//     const product = await Product.create(req.body);
+//     res.status(201).json({
+//         success:true,
+//         product
+//     })
+
+    
+// });
+//admin route --edited
 export const createProduct = catchAsyncErrors( async(req,res,next)=>{
-    req.body.user = req.user.id; //we are assigning the value "user":"user id"
-    const product = await Product.create(req.body);
+ 
+
+  let user = req.user.id; //we are assigning the value "user":"user id"
+  const {productName,description,price,category,stock,images,offer}=req.body.dataset
+  let data_to_be_upload={name:productName,description:description,price:price,category:category,stock:stock,images:images,user:user,offer:offer}
+  try {
+    const product = await Product.create(data_to_be_upload);
+    if(product){
     res.status(201).json({
         success:true,
         product
     })
+    }
+  } catch (error) {
+    res.json({success:false,error:error})
+  }
+ 
 
-    
+  
 });
 
+
 export const getAllProducts =catchAsyncErrors(async(req,res,next)=>{
-    const resultPerPage =8;
+    // const resultPerPage =8;
     const productCount = await Product.countDocuments();
     const apiFeature = new ApiFeatures(Product.find(), req.query)
-    .search().filter().pagination(resultPerPage);
+    .search().filter()
+    // .pagination(resultPerPage);
     const products = await apiFeature.query;
     res.status(200).json({
         success:true,
@@ -39,20 +63,21 @@ export const getSingleProduct = catchAsyncErrors(async(req,res,next)=>{
         });
     
 });
-//admin route
-export const updateProduct =catchAsyncErrors(async (req,res,next)=>{
-    let product = await Product.findById(req.params.id);
-     if (!product) {
-            return next(new ErrorHandler("Product not found",404));
-        }
-    
-    product = await Product.findByIdAndUpdate(req.params.id,req.body,
-        {new:true,runValidators:true,useFindAndModify:false});
 
-    res.status(200).json({
-        success:true,
-        product
-    })
+// admin route
+export const updateProduct =catchAsyncErrors(async (req,res,next)=>{
+  let product = await Product.findById(req.params.id);
+   if (!product) {
+          return next(new ErrorHandler("Product not found",404));
+      }
+  
+  product = await Product.findByIdAndUpdate(req.params.id,req.body,
+      {new:true,runValidators:true,useFindAndModify:false});
+
+  res.status(200).json({
+      success:true,
+      product
+  })
 })
 export const deleteProduct =catchAsyncErrors(async (req,res,next)=>{
     let product = await Product.findById(req.params.id);
