@@ -7,7 +7,7 @@ const productSlice = createSlice({
     },
     reducers: {
       addItem: (state, action) => {
-        const newItem = { ...action.payload, _id: uuidv4() };
+        const newItem = { ...action.payload, productId: uuidv4() };
         state.items.push(newItem);
         localStorage.setItem("cartItems", JSON.stringify(state.items)); // Update local storage
       },

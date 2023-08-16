@@ -3,7 +3,17 @@ import CompleteShoppingCard from './CompleteShoppingCard'
 import {useSelector } from 'react-redux';
 
 const CompleteShoppingList = () => {
-  const products = useSelector(store => store.productDisplay.items);
+  const [products,setProducts] = useState([]);
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const getProducts = async () => {
+    const data = await fetch(`http://localhost:3000/api/v1/products`);
+    const jsonData = await data.json();
+    setProducts(jsonData.products);
+  }
+  // const products = useSelector(store => store.productDisplay.items);
   const [page, setPage] = useState(1);
   return (
     <>

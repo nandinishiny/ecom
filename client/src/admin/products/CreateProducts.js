@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-import picnew from '../assets/picenter.png'
+import picnew from '../../assets/picenter.png'
 // import cookie from 'react-cookie';
-import { newRequest } from '../components/userAuth/newRequest';
+import { newRequest } from '../../components/userAuth/newRequest';
 const CreateProducts = () => {
   const [productName,setProductName] = useState('');
   const [description,setDescription] = useState('');

@@ -1,5 +1,6 @@
 // frontend/src/components/UserOrderPage.js
-import React from 'react';
+import React, { useEffect } from 'react';
+import { newRequest } from '../userAuth/newRequest';
 
 const dummyOrders = [
   {
@@ -26,8 +27,34 @@ const dummyOrders = [
 ];
 
 const UserOrderPage = () => {
+  // const getMyOrders = async()=>{
+  //   try {
+  //     const response = await newRequest.post("/orders/me");
+  //     console.log(response)
+      
+  //   } catch (error) {
+  //     console.log(error)  
+  //   }
+  // }
+  // useEffect(()=>{
+  //   getMyOrders();
+  // },[])
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const getUsers = async () => {
+    try {
+      const response = await newRequest.get('/orders/me');
+      console.log(response)
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
   return (
-    <div className="p-4">
+    <div className="p-4 h-screen">
       <h2 className="text-2xl font-semibold mb-4">Your Orders</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full">
@@ -44,7 +71,7 @@ const UserOrderPage = () => {
           <tbody>
             {dummyOrders.map((order) => (
               <tr key={order.orderNumber} className="bg-white">
-                <td className="py-3 px-6 b">{order.orderNumber}</td>
+                <td className="py-3 px-6 ">{order.orderNumber}</td>
                 <td className="py-3 px-6">{order.date}</td>
                 <td className="py-3 px-6">{order.shipTo}</td>
                 <td className="py-3 px-6">{order.totalAmount}</td>

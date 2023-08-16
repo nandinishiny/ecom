@@ -1,6 +1,7 @@
 // About.js
 import React from "react";
 import { motion } from "framer-motion";
+import Confetti from 'react-confetti'
 
 function About() {
   const containerVariants = {
@@ -20,6 +21,8 @@ function About() {
       animate="visible"
       variants={containerVariants}
     >
+      <Confetti
+       width={innerWidth} height={innerHeight} gravity={0.58} friction={0.99} tweenDuration={5000} recycle={false} />
       <motion.h2
         className="text-3xl font-bold mb-4"
         variants={textVariants}

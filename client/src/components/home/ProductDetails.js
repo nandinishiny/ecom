@@ -11,6 +11,7 @@ import {FaEdit} from 'react-icons/fa'
 import axios from 'axios';
 import { newRequest } from '../userAuth/newRequest';
 import CartMessage from '../cart/CartMsg';
+import { addToCheckOut } from '../../redux/CheckoutOrderSlice';
 const ProductDetails = () => {
     const [singleItem,setSingleItem]=useState("");//this variable use to fetch the product from api.
     const [showNotify,setShowNotify]=useState(false);
@@ -172,6 +173,12 @@ const updateProductForm = async (e) => {
         
     } 
   }
+  //Check out to store order details
+  const checkOutToStore = ()=>{
+    const arr = [];
+    arr.push(singleItem)
+    dispatch(addToCheckOut(arr));
+  }
   
 
     {/*Shimmer in absence of product data */}
@@ -221,7 +228,8 @@ const updateProductForm = async (e) => {
                 <button className='m-4 rounded-sm w-fit sm:p-2 p-1 text-center text-lg text-white bg-blue-500 hover:bg-blue-300 font-semibold '
                 onClick={()=>addItemtoCart(singleItem)} >Add to cart</button>
                 {/*Buy now*/}
-                <Link to={`/payment?price=${price}`}><button
+                <Link to={`/payment?price=${price}`}>
+                    <button onClick={checkOutToStore}
                  className='m-4 w-fit  text-center text-lg text-white rounded-sm 
                 bg-blue-500 hover:bg-blue-300  font-semibold sm:p-2 p-1 ' 
                 >Buy now</button></Link>

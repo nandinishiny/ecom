@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import {RxHamburgerMenu} from 'react-icons/rx'
 import {FiSearch} from 'react-icons/fi'
 import {BsCart4} from 'react-icons/bs'
+// import {BsCart4} from 'react-icons/bs'
 import {RiFolderUserFill} from 'react-icons/ri'
 import {BsFillHeartFill} from 'react-icons/bs'
 import {FaUserCircle} from 'react-icons/fa'
@@ -35,6 +36,8 @@ const Header = () => {
       document.removeEventListener('click',handleClickOutside);
     }
   },[])
+
+
   const logOut=async()=>{
     try {
       await newRequest.get("/logout"); 
@@ -46,33 +49,56 @@ const Header = () => {
       
     }
   }
+
+  {/*user from local storage*/}
   const userInLst = JSON.parse(localStorage.getItem("currentUser"));
   
   return (
     <div className='w-full'>
-    <div className='flex items-center justify-between px-2 sm:px-6 py-6 sm:py-0  shadow-lg  '>
+    <div className='flex items-center justify-between px-2 sm:px-6 py-6 sm:py-0  shadow-lg w-full  '>
+      {/*Header first*/}
       <ul className='flex items-center'>
+        {/*Hamburger menu Icon*/}
         <Link><li ><RxHamburgerMenu className='text-lg sm:text-2xl '/></li></Link>
+         {/*Logo*/}
         <Link><li className='hidden sm:block'><img src="https://www.simicart.com/blog/wp-content/uploads/eCommerce-logo-1.jpg" alt="" className=' w-28 h-20 object-cover'/></li></Link>
       </ul>
+      {/*Header Second*/}
+       {/*Navbar*/}
       <ul className='flex items-center gap-4 sm:gap-6 font-semibold'>
+         {/*Home*/}
         <li ><Link>Home</Link></li>
+         {/*Products*/}
         <li ><Link to={'/products'}>Products</Link></li>
+        {/*About*/}
         <li className='hidden sm:block'><Link to={"/about"}>About</Link></li>
+        {/*Orders*/}
         <li><Link to={`/user/orders`}>Orders</Link></li>
-        {userInLst && userInLst?.role !=='admin'&&<li className='hidden sm:block'><Link>Contact</Link></li>}
+        {/*Admin Page*/}
         {userInLst && userInLst?.role ==='admin'&&<li className='bg-pink-500 text-white p-1 rounded-md'>
-          <Link to={"/admin"}>Admin Block</Link></li>}
+          <Link to={"/admin"}>Admin Page</Link></li>}
       </ul>
-      <ul className='flex items-center gap-6 text-xl sm:text-2xl'>
-      <Link to={'/search'}><li><FiSearch /></li></Link>
-      <Link to={`/cart`}><li className='flex items-center'><BsCart4 /> <span className='text-xl font-semibold'>--{cart.length}</span></li></Link>
+
+       {/*Header Third*/}
+      {/* Search Bar*/}
+      <ul className='flex items-center gap-6 text-xl sm:text-2xl '>
+     
+    
+
+      <Link to={'/search/page'}><li className='cursor-pointer'><FiSearch /></li></Link>
+  
+      {/* Cart*/}
+      <Link to={`/cart`}><li className='flex items-center'><BsCart4 /> <span className='text-xl font-semibold'> --{cart.length}</span></li></Link>
+      {/* Liked Page*/}
       <Link to={`/liked`}>
         <li className='flex flex-col items-center justify-center relative bottom-2' >
         <span className='text-sm relative top-5 text-white font-bold'>{liked.length}</span>
       <BsFillHeartFill className=' text-pink-600 text-2xl'/></li></Link>
+
+      {/* Login icon if not logined*/}
       {!userInLst?
       (<Link to={"/login"}><li><RiFolderUserFill /></li></Link>):
+      /* if logined user Icon*/
       (<div className='flex items-center justify-between sm:flex-row flex-col sm:gap-2 '>
         <div className='flex flex-col items-center justify-center'>
          <button ref={buttonRef} onClick={()=>setShowMenu(!showMenu)}>
@@ -86,6 +112,7 @@ const Header = () => {
       }
       </ul>
     </div>
+    {/* Small Box showing Profile*/}
     {showMenu&& <div ref={menuRef}
      className='absolute right-4 top-20 bg-white flex flex-col text-center h-fit w-36 border-2 rounded-md'>
       <Link  className='hover:bg-gray-300 transition-colors duration-500' to={"/user"}>

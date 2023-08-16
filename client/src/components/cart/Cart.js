@@ -5,6 +5,7 @@ import EmptyCart from './EmptyCart';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '../../redux/productSlice';
 import { Link } from 'react-router-dom';
+import { addToCheckOut } from '../../redux/CheckoutOrderSlice';
 
 const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -14,8 +15,10 @@ const Cart = () => {
   const clearAll = () => {
     dispatch(clearCart());
   };
-
   const cart = useSelector(store => store.product.items);
+  const checkOutToStore = ()=>{
+    dispatch(addToCheckOut(cart));
+  }
 
   useEffect(() => {
     // Calculate total price
@@ -36,11 +39,16 @@ const Cart = () => {
       <div className='sm:w-3/5 w-11/12  h-full sm:ml-20 mx-4 mt-10 flex flex-col gap-2 '>
         <div className='bg-white w-full h-3/5 overflow-auto sm:shadow-lg'>
           {cart.map((item, index) => {
-            return <CartItem {...item} key={item._id} />;
+            return <CartItem {...item} key={item.productId} />;
           })}
         </div>
         <div className='w-full h-20 bg-white shadow-lg flex justify-end items-center'>
-        <Link to={`/payment?price=${totalPrice}`}><button className='bg-blue-500 rounded-md text-white px-10 py-3 m-4 font-semibold'>PLACE ORDER</button></Link>
+        <Link to={`/payment?price=${totalPrice}`}>
+          <button onClick={checkOutToStore} 
+            className='bg-blue-500 rounded-md text-white px-10 py-3 m-4 font-semibold'>
+            PLACE ORDER
+          </button>
+          </Link>
         </div>
         <div className='w-full h-20 bg-white shadow-lg flex justify-end items-center'>
           <button className='rounded-md e px-10 py-3 m-4 font-semibold' onClick={() => clearAll()}>

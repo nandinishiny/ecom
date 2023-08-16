@@ -8,22 +8,28 @@ import Home from "./components/home/Home";
 import CompleteShoppingList from "./components/home/CompleteShoppingList";
 import Cart from "./components/cart/Cart";
 import ProductDetails from "./components/home/ProductDetails";
-import Search from './components/home/Search'
+// import Search from './components/home/Search'
 import LikedComponent from "./components/liked/LikedComponent";
 import Login from "./components/userAuth/Login";
 import SignUp from "./components/userAuth/SignUp";
 import User from "./components/userAuth/User";
 // import createProduct from "./admin/createProduct";
-import CreateProducts from "./admin/CreateProducts";
+import CreateProducts from "./admin/products/CreateProducts";
 import Admin from "./admin/Admin";
-import UsersByAdmin from "./admin/UsersByAdmin";
-import ProductCreation from "./admin/ProductCreation";
+import UsersByAdmin from "./admin/users/UsersByAdmin";
+import ProductCreation from "./admin/products/ProductCreation";
 // import UpdateProduct from "./admin/UpdateProduct";
 import Order from "./components/Orders/Order";
 import PaymentComponent from "./components/payments/RajorPay";
 import PaymentSuccess from "./components/payments/PaymentSuccess";
 import About from "./components/about/About";
 import UserOrderPage from "./components/Orders/Order";
+import AdminOrderManagement from "./admin/orders/AdminOrderManagement";
+import Search from "./components/layout/search/Search";
+import SearchPage from "./components/layout/search/SearchPage";
+import UserList from "./admin/users/UsersList";
+import Address from "./components/payments/Address";
+import CheckoutPage from "./components/payments/CheckoutPage";
 const App = ()=>{
     return(
     <>
@@ -74,18 +80,7 @@ export const AppRouter = createBrowserRouter([
             path:'/user',
             element:<User/>
         },
-        {
-            path:"/product/new",
-            element:<CreateProducts/>
-        },
-        {
-            path:"/admin",
-            element:<Admin/>
-        },
-        {
-            path:'/admin/users',
-            element:<UsersByAdmin/>
-        },
+       
         {
             path:'/admin/product/creation',
             element:<ProductCreation/>
@@ -95,8 +90,8 @@ export const AppRouter = createBrowserRouter([
             element:<UserOrderPage/>
         },
         {
-            path:'/payment',
-            element:<PaymentComponent/>
+            path:'/address',
+            element:<Address/>
         },
         {
             path:'/payment/success',
@@ -106,6 +101,39 @@ export const AppRouter = createBrowserRouter([
             path:'/about',
             element:<About/>
         },
+        {
+            path:'/search',
+            element:<Search/>
+        },
+        {
+            path:'/search/page',
+            element:<SearchPage/>
+        },
+        {
+            path:"/admin",
+            element:<Admin/>
+        },
+        {
+            path:"admin/product/new",
+            element:<CreateProducts/>
+        },
+        {
+            path:'/admin/orders',
+            element:<AdminOrderManagement/>
+        },
+        {
+            path:'/admin/users',
+            element:<UsersByAdmin/>
+        },
+        {
+            path:'/admin/users/List',
+            element:<UserList/>
+        },
+        {
+            path:'/payment',
+            element:<CheckoutPage/>
+        },
+
     
        
        

@@ -3,7 +3,7 @@ import { newRequest } from '../userAuth/newRequest';
 import { useLocation } from 'react-router-dom';
 import Razorpay from 'razorpay';
 
-const PaymentComponent = () => {
+const PaymentComponent = ({handleOrder}) => {
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
@@ -38,7 +38,7 @@ const PaymentComponent = () => {
                 }
             };
             const rzp1 = new window.Razorpay(options);
-                rzp1.open();
+            rzp1.open();
             
         } catch (error) {
             console.log(error)
@@ -47,15 +47,20 @@ const PaymentComponent = () => {
 
         // Additional data for creating the order on the server
         }
+        const handleButtonClick = (e)=>{
+            initiatePayment(e);
+            handleOrder();
+        }
 
   return (
-    <div className='flex justify-around'>
-        <div>Address</div>
+    <div >
         <div className='h-screen flex flex-col items-center '>
             <img src="https://cdn.razorpay.com/logo.png" alt="" 
             className='m-4' />
-        <button onClick={initiatePayment}
-        className='bg-yellow-500 p-2 m-2 rounded-md'>Pay With RazorPay</button>
+        <button 
+            onClick={handleButtonClick}
+        // onClick={initiatePayment}
+        className='bg-pink-600 p-2 m-2 rounded-md font-bold text-white'>Pay With RazorPay</button>
         </div>
     </div>
   );
