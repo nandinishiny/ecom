@@ -4,7 +4,6 @@ import catchAsyncErrors from "../middleware/catchAsync.js";
 
 // Create new order
 export const newOrder = catchAsyncErrors(async (req, res, next) => {
-    console.log(req.body)
     const {
         shippingInfo,
         orderItems,

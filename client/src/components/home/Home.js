@@ -20,7 +20,7 @@ const Home = () => {
   const uniqueCategories = [...new Set(products.map(item => item.category))];
   return (
     <div>
-        <Corousel/>
+        <Corousel products = {products}/>
         <ShoppingList  products={products} productCategory = {"View All"}/>
         {uniqueCategories.map((category)=>{
           const categoryProducts = products.filter((item)=>item.category === category);

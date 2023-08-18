@@ -28,7 +28,7 @@ const CompleteShoppingCard = (props) => {
   return (
     <div className='sm:w-1/5 w-full m-4 hover:shadow-lg border-0 p-4 justify-around'
      style={{height:"25rem"}}>
-        <Link className='flex flex-col items-start gap-2' to={`product/${_id}`}>
+        <Link className='flex flex-col items-start gap-2' to={`/product/${_id}`}>
         {images&&<img src={images[0]?.url} alt="" className='w-full h-40 object-contain'/>}
         <h3 className=' text-md font-semibold'
         >{name}</h3>

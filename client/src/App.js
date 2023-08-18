@@ -30,6 +30,12 @@ import SearchPage from "./components/layout/search/SearchPage";
 import UserList from "./admin/users/UsersList";
 import Address from "./components/payments/Address";
 import CheckoutPage from "./components/payments/CheckoutPage";
+import RatingStars from "./components/home/RatingStars";
+import ProductsShimmer from "./components/home/ProductsShimmer";
+import CorouselUpload from "./admin/products/CorouselUpload";
+import DummyData from "./components/DummyData";
+import 'react-toastify/dist/ReactToastify.css';
+import PaymentCallbackPage from "./components/payments/CallbackUrl";
 const App = ()=>{
     return(
     <>
@@ -133,12 +139,30 @@ export const AppRouter = createBrowserRouter([
             path:'/payment',
             element:<CheckoutPage/>
         },
-
+        {
+            path:'/rate',
+            element:<RatingStars/>
+        },
+        {
+            path:'/shimmer',
+            element:<ProductsShimmer/>
+        },
+        {
+            path:'/corousel/upload',
+            element:<CorouselUpload/>
+            
+        },
+        {
+            path:'/img',
+            element:<DummyData/>
+            
+        },
+        {
+            path:'/order/:orderId',
+            element:<PaymentCallbackPage/>
+            
+        },
     
-       
-       
-       
-        
     ]
 
     }

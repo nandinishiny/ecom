@@ -18,11 +18,13 @@ const ProductDetails = () => {
     const [nextItem,setNextItem] = useState(0);
     const [showAddComment,setShowAddComment] = useState(false);
     const [commentInput,setCommentInput] = useState("");
+    const [rating,setRating] = useState(5);
     const [showConfirmation,setShowConfirmation] = useState(false);//this variable show the confirmation page to delete product.
     const [showCartMessage, setShowCartMessage] = useState(false);//to show a message when an item is added to the cart.
 
     //editable variables
     const [isAdmin,setIsAdmin] = useState(false);//to check weather edit option available or not.
+    
 
     {/*getting id from parameters*/}
     const {id}=useParams();
@@ -32,11 +34,7 @@ const ProductDetails = () => {
     useEffect(()=>{
         getSingleItemDetails()
     },[]);
-    // const getSingleItemDetails =async()=>{
-    //     const data = await fetch(`http://localhost:3000/api/v1/product/${id}`);
-    //     const jsonData = await data.json();
-    //     setSingleItem(jsonData.product) 
-    // }
+
     const getSingleItemDetails = async () => {
         try {
           const response = await fetch(`http://localhost:3000/api/v1/product/${id}`);
@@ -52,7 +50,7 @@ const ProductDetails = () => {
       };
     
     {/*Destructuring data from api*/}
-    const {description,name,price,ratings,images,category,stock,reviews,noOfReviews,offer}= singleItem;
+    const {description,name,price,ratings,images,category,stock,reviews,noOfReviews,offer,_id}= singleItem;
     const [editName,setEditName] = useState(name || '');
     const [editDesc,setEditDesc] = useState(description || '');
     const [editPrice,setEditPrice] = useState(price || '');
@@ -61,6 +59,8 @@ const ProductDetails = () => {
     const [editImages,setEditImages] = useState(images || []);
     const [editCategory,setEditCategory] = useState(category || '');
     const [editStock,setEditStock] = useState(stock || '');
+
+    
 
    {/*Making image corousel */}
     const nextItemView =()=>{
@@ -179,11 +179,31 @@ const updateProductForm = async (e) => {
     arr.push(singleItem)
     dispatch(addToCheckOut(arr));
   }
+  const submitReview =async ()=>{
+    const reqObj = {
+        rating:rating,
+        comment:commentInput,
+        productId:_id
+    }
+    try {
+        await newRequest.put("/review",reqObj);
+        getSingleItemDetails();
+        setShowAddComment(false)
+    } catch (error) {
+        console.log(error)    
+    }
+
+  }
   
 
     {/*Shimmer in absence of product data */}
     if(!singleItem){
         return <ProductDetailShimmer/>
+    }
+    if(!userInLst){
+        return( <div className='h-screen'>
+            Please login !!
+        </div>)
     }
   return (
     <>
@@ -211,7 +231,7 @@ const updateProductForm = async (e) => {
                             // ref={imageRefs[index]}
                             key={item.public_id}>
                                 <img src={item.url} alt="ek img"
-                                className='h-24 w-fit'/>
+                                className='h-24 w-fit object-contain'/>
                                 {isAdmin&&(
                                 <div>
                                     <label htmlFor="img"
@@ -251,7 +271,7 @@ const updateProductForm = async (e) => {
                     className='border-b-2 outline-none'/>}
 
                     {/* editing the product --admin*/}
-                    {userInLst &&
+                    {userInLst.role === 'admin' &&
                     <div
                     onClick={KeepOnEditMode}
                     className='text-blue-500 flex items-center gap-1 cursor-pointer '>
@@ -259,7 +279,7 @@ const updateProductForm = async (e) => {
                         <FaEdit/>
                     </div>}
                     {/*Deleting the product*/}
-                    {userInLst &&
+                    {userInLst.role === 'admin' &&
                     <div
                     onClick={()=>setShowConfirmation(true)}
                     className='text-blue-500 flex items-center gap-1 cursor-pointer '>
@@ -336,22 +356,28 @@ const updateProductForm = async (e) => {
                 {/* Comments */}
                 <div className='flex flex-col items-start'>
                     <h5 className='text-lg font-semibold mt-10'>Comments</h5>
-                    <button onClick={()=>addComment(true)} className='p-1 bg-yellow-200'>Add your comment
+                    {/*Enabling to add comment*/}
+                    <button onClick={()=>setShowAddComment(true)} className='p-1 bg-yellow-200'>Add your comment
                     </button>
+
                     {/* Show add comment option*/}
                     {showAddComment&&
                     (<div className='overflow-x-auto'>
+                        <input type="number" step={0.5} value={rating} 
+                        onChange={(e)=>setRating(e.target.value)}/>
                         <input type="text" 
                         className='outline-none border-b w-full border-gray-800 w-fit p-1 '
                          autoFocus style={{width:"800px",whiteSpace:"normal",
                          overflowWrap: "break-word"}} 
                          value={commentInput}
                          onChange={(e)=>setCommentInput(e.target.value)} />
-                         <button onClick={()=>addComment(false)}
+                         <button onClick={()=>setShowAddComment(false)}
                          className='p-1 bg-yellow-200 m-1'>Cancel</button>
-                         <button className='bg-blue-600 p-1 m-1  text-white'>Submit</button>
+                         <button className='bg-blue-600 p-1 m-1  text-white'
+                         onClick={submitReview}>Submit</button>
 
                     </div>)}
+
                     {/*Reviews*/}
                     {reviews.map((item)=>{
                     return(
@@ -364,6 +390,8 @@ const updateProductForm = async (e) => {
                         </div>
                         
                     </div>)})}
+
+
                     {/*the edited images*/}
                     {isAdmin && editImages && editImages.map((item,index)=>{
                         return(
@@ -396,22 +424,3 @@ const updateProductForm = async (e) => {
 
 export default ProductDetails
 
-{/*using useRef for images*/}
-    // const imageRef = useRef(null);
-     // Creating an array of refs for each image
-
-     {/* using for surface moving*/}
-    // const imageRefs = images?.map(() => useRef(null)); 
-    // useEffect(()=>{
-    //     const hoverOverImage = (e) => {
-    //         imageRefs?.forEach((ref, index) => {
-    //           if (ref.current && ref.current.contains(e.target)) {
-    //             console.log(`Hovering over image with URL: ${images[index].url}`);
-    //           }
-    //         });
-    //       };      
-    //     document.addEventListener('mouseover',hoverOverImage);
-    //     return()=>{
-    //       document.removeEventListener('mouseover',hoverOverImage);
-    //     }
-    //   },[])

@@ -108,18 +108,22 @@ const UserList = () => {
         <IndividualUserDetails
           user={selectedUser}
           onClose={handleCloseOverlay}
+          getUsers={getUsers}
         />
       )}
       {selectedAction === 'update' && (
         <UpdateUserOverlay
           user={selectedUser}
           onClose={handleCloseOverlay}
+          getUsers={getUsers}
         />
       )}
       {selectedAction === 'delete' && (
         <DeleteUserOverlay
           user={selectedUser}
           onClose={handleCloseOverlay}
+          getUsers={getUsers}
+
         />
       )}
     </div>

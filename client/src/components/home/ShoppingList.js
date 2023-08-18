@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {IoIosArrowBack} from 'react-icons/io'
 import {IoIosArrowForward} from 'react-icons/io'
+import {HiArrowCircleRight} from 'react-icons/hi'
+import {HiArrowCircleLeft} from 'react-icons/hi'
 import Metadata from './Metadata'
 import { useSelector } from 'react-redux'
 import CompleteShoppingCard from './CompleteShoppingCard'
@@ -54,11 +56,11 @@ const ShoppingList = (props) => {
           {/*Previous Buttons*/}
         {products.length > 4 &&
           <>
-          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoPreviousItems()}> <IoIosArrowBack className='sm:text-6xl text-4xl text-gray-500 '/></button>
+          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoPreviousItems()}> <HiArrowCircleLeft className='sm:text-6xl text-4xl text-gray-500 '/></button>
           <button className="hover:bg-pink-200 sm:hidden block bg-blue-600 text-white p-2 rounded-md" onClick={()=>movetoPreviousItems()}> 
           Previous</button></>}
           {/*Products */}
-          <div className='sm:w-full sm:border-2 sm:ml-4 sm:overflow-x-auto flex sm:flex-nowrap flex-wrap w-full '>
+          <div className='sm:w-full sm:border-2 sm:ml-4 sm:overflow-x-auto flex sm:flex-nowrap flex-wrap w-full overflow-y-hidden'>
           {products && visibleItems.map((item,index)=>{
           return(<CompleteShoppingCard key={item._id} {...item}/>)
           })}
@@ -66,7 +68,7 @@ const ShoppingList = (props) => {
           {/* Next Buttons*/}
           {products.length > 4 &&
           <>
-          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoNextItems()}><IoIosArrowForward className='sm:text-6xl text-4xl text-gray-500'/></button>
+          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoNextItems()}><HiArrowCircleRight className='sm:text-6xl text-4xl text-gray-500'/></button>
           <button className="hover:bg-pink-200 sm:hidden block bg-blue-600 text-white p-2 rounded-md" onClick={()=>movetoNextItems()}> 
           Next</button></>}
         </div>

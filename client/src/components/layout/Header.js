@@ -54,8 +54,8 @@ const Header = () => {
   const userInLst = JSON.parse(localStorage.getItem("currentUser"));
   
   return (
-    <div className='w-full'>
-    <div className='flex items-center justify-between px-2 sm:px-6 py-6 sm:py-0  shadow-lg w-full  '>
+    <div className='w-full '>
+    <div className='  flex items-center justify-between px-2 sm:px-6 py-6 sm:py-0  shadow-lg w-full  '>
       {/*Header first*/}
       <ul className='flex items-center'>
         {/*Hamburger menu Icon*/}
@@ -103,7 +103,7 @@ const Header = () => {
         <div className='flex flex-col items-center justify-center'>
          <button ref={buttonRef} onClick={()=>setShowMenu(!showMenu)}>
           <img src={userInLst.avatar.url} alt="image"
-          className='rounded-full w-10 h-10 relative'  />
+          className='rounded-full w-10 h-10 relative object-contain'  />
          </button>
          {userInLst.role==="admin"&&<p className='text-sm font-bold'>admin</p>} 
         </div>
@@ -114,11 +114,11 @@ const Header = () => {
     </div>
     {/* Small Box showing Profile*/}
     {showMenu&& <div ref={menuRef}
-     className='absolute right-4 top-20 bg-white flex flex-col text-center h-fit w-36 border-2 rounded-md'>
+     className='absolute right-4 top-20 bg-white flex flex-col text-center h-fit w-36 border-2 rounded-md z-40'>
       <Link  className='hover:bg-gray-300 transition-colors duration-500' to={"/user"}>
         <span>My profile</span></Link>
-      <Link to={"/user"} className='hover:bg-gray-300 transition-colors duration-500'>
-        <span >Orders</span></Link>
+      {/* <Link to={"/user"} className='hover:bg-gray-300 transition-colors duration-500'>
+        <span >Orders</span></Link> */}
       <button onClick={()=>logOut()}><span className='hover:bg-gray-300 transition-colors duration-500 cursor-pointer'>
         Log Out</span></button>
       </div>}

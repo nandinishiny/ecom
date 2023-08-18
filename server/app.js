@@ -9,13 +9,15 @@ import cookieParser from "cookie-parser";
 import orderRouter from "./routes/orderRoute.js";
 import bodyParser from "body-parser";
 import paymentRouter from "./routes/paymentRoute.js";
+import corouselRouter from "./routes/corouselRoute.js";
 dotenv.config({path:"server/config/config.env"})
 mongoConnect().then(console.log(`connected successfully in app`)).catch((e)=>console.log(`the error occusrs ${e}`))
 
 
 const app = express();
 app.use(express.json());
-app.use(cookieParser());
+app.use(bodyParser.json()); // for JSON-encoded bodies
+app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
     origin: ['http://localhost:1234'],
@@ -25,11 +27,24 @@ app.use("/api/v1",productRouter);
 app.use("/api/v1",userRouter);
 app.use("/api/v1",orderRouter);
 app.use("/api/v1",paymentRouter);
+app.use("/api/v1",corouselRouter);
 app.get("/api/v1/getkey",(req,res)=>{
   res.status(200).json({
     key:"rzp_test_vTeNx7bSuCyyuP"
   })
 })
+app.get('/razorpay-callback', (req, res) => {
+  // Process the callback data here
+
+  // Assuming payment is successful
+  const orderId = req.body.orderId; // Example: Get the order ID from the callback data
+
+  // Construct the orders page URL
+  const ordersPageUrl = `http://localhost1234/order/${orderId}`;
+
+  // Send the orders page URL as part of the response
+  res.json({ status: 'success', ordersPageUrl });
+});
 
 
 

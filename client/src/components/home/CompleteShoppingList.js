@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CompleteShoppingCard from './CompleteShoppingCard'
 import {useSelector } from 'react-redux';
+import ProductsShimmer from './ProductsShimmer';
 
 const CompleteShoppingList = () => {
   const [products,setProducts] = useState([]);
@@ -15,6 +16,9 @@ const CompleteShoppingList = () => {
   }
   // const products = useSelector(store => store.productDisplay.items);
   const [page, setPage] = useState(1);
+  if(products.length ===0){
+    return (<ProductsShimmer/>)
+  }
   return (
     <>
       <div className='flex flex-wrap justify-around'>

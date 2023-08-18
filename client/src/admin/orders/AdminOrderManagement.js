@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { newRequest } from '../../components/userAuth/newRequest';
+import UpdateOrder from './UpdateOrder';
 
 const AdminOrderManagement = () => {
   const [orders, setOrders] = useState([]);
+  const [selectedOrderId,setSelectedOrderId] = useState(null);
 
   useEffect(() => {
     getAllOrders();
@@ -18,9 +20,16 @@ const AdminOrderManagement = () => {
   };
   const reverseOrders = [...orders].reverse();
 
+  const onClose = ()=>{
+    setSelectedOrderId(null)
+  }
+  const handleUpdate = (item)=>{
+    setSelectedOrderId(item)
+  }
+
 
   return (
-    <div className="p-4 h-screen">
+    <div className="p-4 ">
       <h2 className="text-2xl font-semibold mb-4">Order Management</h2>
       <table className="min-w-full">
         <thead>
@@ -37,6 +46,7 @@ const AdminOrderManagement = () => {
             <th className="py-3 px-6 text-left">Date</th>
             <th className="py-3 px-6 text-left">Payment Status</th>
             <th className="py-3 px-6 text-left">Delivery Status</th>
+            <th className="py-3 px-6 text-left">Update/Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -44,9 +54,16 @@ const AdminOrderManagement = () => {
             <tr key={order._id} className="bg-white">
               <td className="py-3 px-6">{order._id}</td>
               <td className="py-3 px-6">{order.user}</td>
-              <td className="py-3 px-6">{order.orderItems[0].name}</td>
-              <td className="py-3 px-6">{order.orderItems[0].quantity}</td>
-              <td className="py-3 px-6">{order.orderItems[0].price}</td>
+              {/* <td className="py-3 px-6">{order.orderItems[0].name}</td> */}
+              <td className="py-3 px-6">{order.orderItems.map((item, index) => (
+                  <div key={index}>{index+1} . {item.name}</div>))}</td>
+              <td className="py-3 px-6">{order.orderItems.map((item, index) => (
+                  <div key={index}> {item.quantity}</div>))}</td>
+              <td className="py-3 px-6">{order.orderItems.map((item, index) => (
+                  <div key={index}>{index+1} . {item.price}</div>))}</td>
+
+              {/* <td className="py-3 px-6">{order.orderItems[0].quantity}</td> */}
+              {/* <td className="py-3 px-6">{order.orderItems[0].price}</td> */}
               <td className="py-3 px-6">{order.totalPrice}</td>
               <td className="py-3 px-6">{order.taxPrice}</td>
               <td className="py-3 px-6">{order.shippingPrice}</td>
@@ -54,10 +71,12 @@ const AdminOrderManagement = () => {
               <td className="py-3 px-6">{order.createdAt}</td>
               <td className="py-3 px-6">{order.paymentInfo.status}</td>
               <td className="py-3 px-6">{order.orderStatus}</td>
+              <td className="py-3 px-6"><button onClick={()=>handleUpdate(order._id)}>Update</button></td>
             </tr>
           ))}
         </tbody>
       </table>
+      {selectedOrderId && <div><UpdateOrder orderId = {selectedOrderId} onClose={onClose} getAllOrders = { getAllOrders} /></div>}
     </div>
   );
 };

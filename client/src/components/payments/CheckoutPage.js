@@ -11,7 +11,7 @@ const CheckoutPage = () => {
     // const checkOutOrders = useSelector(store=>store.checkout.items);
 const checkOutOrdersJSON = localStorage.getItem("checkoutDetails");
 const checkOutOrders = checkOutOrdersJSON ? JSON.parse(checkOutOrdersJSON) : [];
-console.log(checkOutOrders)
+
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showPaymentOverlay, setShowPaymentOverlay] = useState(false);//to show payment form
@@ -47,7 +47,7 @@ const cleanOrderItems = checkOutOrders.map(item => {
   const name = item.name;
   const price = item.price;
   const quantity = 1;
-  const img = item.images[0].url
+  const img = item?.images[0]?.url 
   const product = item._id;  
   return { name, price, quantity, img, product };
 });

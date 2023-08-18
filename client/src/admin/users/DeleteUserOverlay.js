@@ -1,10 +1,11 @@
 import React from 'react';
 import { newRequest } from '../../components/userAuth/newRequest';
 
-const DeleteUserOverlay = ({ user, onClose }) => {
+const DeleteUserOverlay = ({ user, onClose,getUsers }) => {
   const handleDelete = async () => {
     try {
       await newRequest.delete(`/admin/user/${user._id}`)
+      getUsers();
       onClose(); // Close the overlay after successful deletion
     } catch (error) {
       console.error('Error deleting user:', error);

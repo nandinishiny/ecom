@@ -9,9 +9,9 @@ const UserByAdmin = () => {
         <Link to="/admin/users/list" className="bg-blue-500 text-white py-4 px-6 rounded shadow hover:bg-blue-600">
           Total users
         </Link>
-        <Link to='/admin/users/with/orders' className="bg-green-500 text-white py-4 px-6 rounded shadow hover:bg-green-600">
+        {/* <Link to='/admin/users/with/orders' className="bg-green-500 text-white py-4 px-6 rounded shadow hover:bg-green-600">
          Users with Orders
-        </Link>
+        </Link> */}
        
         {/* Add more widgets, charts, etc. */}
       </div>

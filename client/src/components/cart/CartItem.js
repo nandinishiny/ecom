@@ -19,7 +19,6 @@ const CartItem = (props) => {
         <div className=' flex justify-start gap-4 font-semibold'>
           {/* <p className='line-through'>₹{strikedPrice}</p> */}
           <p>₹{price}</p>
-          <p className='text-sm'>{_id}</p>
         </div>
         <div>
           <button className='w-24 text-white bg-blue-500 rounded-md mr-4 mt-4 hover:bg-blue-300'>Buy Now</button>

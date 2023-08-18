@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { newRequest } from '../../components/userAuth/newRequest';
 
-const UpdateUserOverlay = ({ user, onClose }) => {
+const UpdateUserOverlay = ({ user, onClose,getUsers }) => {
   const [updatedName, setUpdatedName] = useState(user.name);
   const [updatedRole, setUpdatedRole] = useState(user.role);
 
@@ -12,6 +12,7 @@ const UpdateUserOverlay = ({ user, onClose }) => {
       };
     try {
         await newRequest.put(`/admin/user/${user._id}`,updatedData)
+        getUsers()
         onClose(); // Close the overlay after successful deletion
       } catch (error) {
         console.error('Error deleting user:', error);
