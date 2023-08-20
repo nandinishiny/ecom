@@ -4,49 +4,51 @@ import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsync.js";
 import sendToken from "../utils/jwtToken.js";
 import sendEmail from "../utils/sendEmail.js";
-import cloudinary from '../utils/cloudinary.js'
-import multer from 'multer';
-
-// Configure Multer for file upload
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+import cloudinary from "../utils/cloudinary.js";
 
 export const registerUser = catchAsyncErrors(async(req,res,next)=>{
-    const {name,email,password,role,avatar}= req.body;
+    const {name,email,password,role}= req.body;
+    let {avatar} = req.body;
     const existingUser = await User.findOne({email});
     if(existingUser){
         return next(new ErrorHandler("User already exist ",500));
     }
-    const user = await User.create({name,email,password,role,avatar});
-    // avatar:{
-    //     public_id:"this is a sample id",
-    //     url:"Profile pic url"                              
-    // },
+     try {
+        if(avatar){
+            const cloudinaryres = await cloudinary.uploader.upload(avatar, {
+                upload_preset: 'ecomandcohome',
+            });
+            if(cloudinaryres){
+                avatar = {
+                    public_id:cloudinaryres.public_id,
+                    url:cloudinaryres.url
+                }
+            }
+        }
+        const user = await User.create({name,email,password,role,avatar});
+        res.status(201).json({
+        success:true,
+        user
+        })
+    }
+     catch (error) {
+        res.json({success:false,error})
+    }
+  
+
+//     const user = await User.create({name,email,password,role,avatar});
+//     // avatar:{
+//     //     public_id:"this is a sample id",
+//     //     url:"Profile pic url"                              
+//     // },
     
-res.status(201).json({
-    success:true,
-    user
-})
-
-})
-
-// export const registerUser = catchAsyncErrors(async (req, res, next) => {
-//     const { name, email, password } = req.body;
-
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//         return next(new ErrorHandler("User already exists", 500));
-//     }
-
-//     const avatarResult = await cloudinary.uploader.upload(req.file.buffer); // Assuming cloudinary works here
-
-//     const user = await User.create({ name, email, password, avatar: avatarResult.secure_url });
-//     res.status(201).json({
+// res.status(201).json({
 //     success:true,
 //     user
-//     })
-    
-// });
+// })
+
+})
+
 
 //login
 export const loginUser = catchAsyncErrors(async(req,res,next)=>{

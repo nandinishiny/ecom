@@ -11,6 +11,7 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const [userName, setUserName] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [profilePreview, setProfilePreview] = useState(null);
     
     const [nameError, setNameError] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -30,14 +31,34 @@ const SignUp = () => {
             setImageError('Please upload a file');
             return; // Return early if no file is selected
         }
-        else {
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onloadend = () => {
-             setImage(reader.result)
-            }
-            setImageError(""); 
-          }
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const content = event.target.result;
+            setProfilePreview(content);
+        }
+        reader.readAsDataURL(file);
+
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'ecomandcohome');
+            formData.append('folder', 'ecomandco');
+            const res = await axios.post(
+                'https://api.cloudinary.com/v1_1/ecomandco/image/upload',
+                formData
+            );
+            alert("Image is uploaded successfully");
+            const imageObject = {
+                public_id: res.data.public_id,
+                url: res.data.secure_url
+            };
+            setImage(imageObject);
+            setImageError(""); // Clear the error message
+            console.log(imageObject.url);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const registerUser = async (e) => {
@@ -54,7 +75,6 @@ const SignUp = () => {
             formData.email = email;
             formData.password = password;
             formData.avatar = image;
-            console.log(formData)
 
             if (!userName) {
                 setNameError("Please enter your name");
@@ -130,7 +150,7 @@ const SignUp = () => {
                     <p>Already have an account!! Click here
                         <Link to='/login' className='font-bold p-2 underline m-2'>Log in</Link>
                     </p>
-                    {image && <img src={image} alt="" className='h-32 object-contain' />}
+                    <img src={profilePreview} alt="" className='h-32 object-contain' />
                 </div>
             </form>
         </div>
@@ -144,7 +164,24 @@ export default SignUp;
 
 
 
+export const registerUser = catchAsyncErrors(async(req,res,next)=>{
+    const {name,email,password,role,avatar}= req.body;
+    const existingUser = await User.findOne({email});
+    if(existingUser){
+        return next(new ErrorHandler("User already exist ",500));
+    }
+    const user = await User.create({name,email,password,role,avatar});
+    // avatar:{
+    //     public_id:"this is a sample id",
+    //     url:"Profile pic url"                              
+    // },
+    
+res.status(201).json({
+    success:true,
+    user
+})
 
+})
 
 
 

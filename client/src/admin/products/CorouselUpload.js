@@ -17,25 +17,22 @@ const CorouselUpload = () => {
         }
       }
     }
-    const handleSubmit = async()=>{
+    const handleSubmit = async(e) => {
+      e.preventDefault();
       const formData = {
         name:name,
         image:image
       }
       console.log(formData)
-
-    try {
-      const response = await newRequest.post('/corousel', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      
-      console.log(response.data);
-    } catch (error) {
-      console.log(error, 'An error occurred');
-    }
-  };
+      try {
+        const response = await newRequest.post('/corousel', formData);
+    
+        console.log(response.data);
+      } catch (error) {
+        console.log(error, 'An error occurred');
+      }
+    };
+    
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">

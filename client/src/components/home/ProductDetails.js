@@ -150,7 +150,7 @@ const updateProductForm = async (e) => {
     }
     try {
       // Make a PUT request to update the product using the API route
-      await newRequest.put(`product/${id}`, updatedData);
+      await newRequest.put(`/product/${id}`, updatedData);
   
       // You might want to refresh the product details after the update
       // You can do this by calling the getSingleItemDetails function again
