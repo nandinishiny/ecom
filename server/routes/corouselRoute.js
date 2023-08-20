@@ -1,6 +1,8 @@
-import express from "express";
-import { createCorousel } from "../controllers/courouselController.js";
+import express from 'express';
+import { uploadImage } from '../controllers/courouselController.js';
 
 const router = express.Router();
-router.post("/corousel", createCorousel);
+
+router.post('/corousel', uploadImage);
+
 export default router;

@@ -2,72 +2,64 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { newRequest } from '../../components/userAuth/newRequest';
 
-
 const CorouselUpload = () => {
-  const [name, setName] = useState('');
-  const [images, setImages] = useState([]);
-  const [message, setMessage] = useState('');
+  const [name,setName]= useState('')
+  const [image,setImage]= useState('')
 
-  const handleImages=(e)=> {
-    const selectedFiles = e.target.files;
-
-    if (selectedFiles) {
-      const imageArray = Array.from(selectedFiles);
-      const readerArray = [];
-
-      imageArray.forEach((file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+    const handleImage = (e)=> {
+      let file = e.target.files[0];
+  
+      if (file) {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
         reader.onloadend = () => {
-          readerArray.push(reader.result);
+         setImage(reader.result)
+        }
+      }
+    }
+    const handleSubmit = async()=>{
+      const formData = {
+        name:name,
+        image:image
+      }
+      console.log(formData)
 
-          if (readerArray.length === imageArray.length) {
-            setImages([...images, ...readerArray]);
-          }
-        };
-      });
-    }
-  }
-  const handleSubmit = async()=>{
-    const reqObj = {
-      name:name,
-      images:images
-    }
     try {
-      const res = await newRequest.post("/corousel",reqObj);
-      console.log(res)
+      const response = await newRequest.post('/corousel', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       
+      console.log(response.data);
     } catch (error) {
-      console.log(error + "the error is") 
+      console.log(error, 'An error occurred');
     }
-  }
+  };
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow-md w-96">
         <h1 className="text-2xl font-semibold mb-4">Upload Images and Name</h1>
-        <form >
+        <div>
           <div className="mb-4">
             <label htmlFor="name" className="block font-medium mb-1">
-              Name:
+              Name
             </label>
             <input
               type="text"
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500"
+              className="w-full"
             />
-          </div>
-          <div className="mb-4">
             <label htmlFor="images" className="block font-medium mb-1">
               Images:
             </label>
             <input
               type="file"
               id="images"
-              accept="image/*"
-              multiple
-              onChange={handleImages}
+              onChange={handleImage}
               className="w-full"
             />
           </div>
@@ -77,8 +69,8 @@ const CorouselUpload = () => {
           >
             Upload
           </button>
-        </form>
-        {message && <p className="mt-4 text-green-600">{message}</p>}
+        </div>
+        {/* ... */}
       </div>
     </div>
   );

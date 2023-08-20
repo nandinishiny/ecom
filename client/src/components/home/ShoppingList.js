@@ -54,11 +54,11 @@ const ShoppingList = (props) => {
         </div>
         <div className='sm:w-5/6 flex items-center sm:flex-row flex-col'>
           {/*Previous Buttons*/}
-        {products.length > 4 &&
-          <>
-          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoPreviousItems()}> <HiArrowCircleLeft className='sm:text-6xl text-4xl text-gray-500 '/></button>
+      
+          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoPreviousItems()}>
+          {products.length > 4 && <HiArrowCircleLeft className='sm:text-6xl text-4xl text-gray-500 '/>}</button>
           <button className="hover:bg-pink-200 sm:hidden block bg-blue-600 text-white p-2 rounded-md" onClick={()=>movetoPreviousItems()}> 
-          Previous</button></>}
+          Previous</button>
           {/*Products */}
           <div className='sm:w-full sm:border-2 sm:ml-4 sm:overflow-x-auto flex sm:flex-nowrap flex-wrap w-full overflow-y-hidden'>
           {products && visibleItems.map((item,index)=>{
@@ -66,11 +66,11 @@ const ShoppingList = (props) => {
           })}
           </div>
           {/* Next Buttons*/}
-          {products.length > 4 &&
-          <>
-          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoNextItems()}><HiArrowCircleRight className='sm:text-6xl text-4xl text-gray-500'/></button>
+          
+          
+          <button className="hover:bg-pink-200 sm:block hidden" onClick={()=>movetoNextItems()}>{products.length > 4 &&<HiArrowCircleRight className='sm:text-6xl text-4xl text-gray-500'/>}</button>
           <button className="hover:bg-pink-200 sm:hidden block bg-blue-600 text-white p-2 rounded-md" onClick={()=>movetoNextItems()}> 
-          Next</button></>}
+          Next</button>
         </div>
         </div>
     </>

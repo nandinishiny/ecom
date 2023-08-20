@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {IoIosArrowBack} from 'react-icons/io'
-import {IoIosArrowForward} from 'react-icons/io'
-import {BsBoxArrowRight} from 'react-icons/bs'
 import {HiArrowCircleRight} from 'react-icons/hi'
 import {HiArrowCircleLeft} from 'react-icons/hi'
-import { useSelector } from 'react-redux';
-import BannerItem from './BannerItem';
 import { Link } from 'react-router-dom';
-
-// const corouselList = [
-//     {
-//         img:"https://rukminim1.flixcart.com/fk-p-flap/1680/280/image/156452518a7921fb.jpg"
-//     },
-//     {
-//         img:"https://rukminim1.flixcart.com/fk-p-flap/1680/280/image/d6dc40011f48d2da.jpg?q=50"
-//     },
-//     {
-//         img:"https://rukminim1.flixcart.com/fk-p-flap/1688/280/image/bf743b1798a4c119.jpg?q=50"
-//     },
-// ]
 
 const Corousel = ({products}) => {
     const corouselList = [

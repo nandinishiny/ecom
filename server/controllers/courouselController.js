@@ -1,39 +1,30 @@
-import catchAsyncErrors from "../middleware/catchAsync.js";
-import Corousel from "../models/corouselModel.js";
-import cloudinary from '../utils/cloudinary.js'; // Import Cloudinary configuration
-import multer from 'multer';
+import corouselModel from "../models/corouselModel.js";
+import cloudinary from "../utils/cloudinary.js";
+export const uploadImage = async (req, res) => {
+  let carouseldata= req.body
+  console.log(carouseldata)
+    try {
 
-// Configure multer upload middleware
-const upload = multer();
+        if(carouseldata.image){
+            const cloudinaryres = await cloudinary.uploader.upload(carouseldata?.image, {
+                upload_preset: 'ecomandcohome',
+                folder:'ecomandco'
+            });
 
-export const createCorousel = catchAsyncErrors(async (req, res, next) => {
-  const carouselData = req.body;
-  console.log(carouselData.name);
+            if(cloudinaryres){
+                carouseldata.image=cloudinaryres;
+                const result = await corouselModel.create(carouseldata)
+                if(result){
+                    res.json({success:true,message:'your banner is added'})
+                }else{
+                    res.json({success:false,message:'some error occured '})
+                }
+            }
+        }
 
-  try {
-    const uploadedImages = [];
-
-    for (const imageData of carouselData.images) {
-      const cloudinaryRes = await cloudinary.uploader.upload(imageData, {
-        upload_preset: 'ecomandco', // Use your actual upload preset here
-      });
-
-      uploadedImages.push({
-        public_id: cloudinaryRes.public_id,
-        url: cloudinaryRes.secure_url,
-      });
+    } catch (error) {
+        res.json({success:false,error})
     }
+  
+};
 
-    carouselData.images = uploadedImages;
-
-    const createdCarousel = await Corousel.create(carouselData);
-
-    if (createdCarousel) {
-      res.json({ success: true, message: 'Your carousel with images has been created.' });
-    } else {
-      res.json({ success: false, message: 'Unable to create carousel with images.' });
-    }
-  } catch (error) {
-    res.json({ success: false, error: error.message });
-  }
-});
