@@ -35,10 +35,12 @@ import ProductsShimmer from "./components/home/ProductsShimmer";
 import CorouselUpload from "./admin/products/CorouselUpload";
 import 'react-toastify/dist/ReactToastify.css';
 import PaymentCallbackPage from "./components/payments/CallbackUrl";
+import HeaderAdd from "./components/layout/HeaderAdd";
 const App = ()=>{
     return(
     <>
     <Header/>
+    <HeaderAdd/>
     <Outlet/>
     <Footer/>
     </>)

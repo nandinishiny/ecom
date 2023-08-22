@@ -54,7 +54,7 @@ const Header = () => {
   const userInLst = JSON.parse(localStorage.getItem("currentUser"));
   
   return (
-    <div className='w-full '>
+    <div className='w-full fixed bg-white '>
     <div className='  flex items-center justify-between px-2 sm:px-6 py-6 sm:py-0  shadow-lg w-full  '>
       {/*Header first*/}
       <ul className='flex items-center'>

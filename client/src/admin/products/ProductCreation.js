@@ -18,11 +18,11 @@ const ProductCreation = () => {
           click here or search above
         </Link>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      {/* <div className="grid grid-cols-2 gap-4">
         <Link to='/corousel/upload' className="bg-blue-500 text-white py-4 px-6 rounded shadow hover:bg-blue-600 mt-4">
           For uploading Corousel Items
-        </Link>
-      </div>
+        </Link> */}
+      {/* </div> */}
     </div>
   );
 };
