@@ -4,11 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { newRequest } from './newRequest';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../redux/userSlice';
+import CartMessage from '../cart/CartMsg';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [msg, setMsg] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [err, setErr] = useState(null);
@@ -24,12 +26,11 @@ const Login = () => {
         setPasswordError("");
 
         try {
+            setMsg("Wait a few Seconds")
             const res = await newRequest.post("/login", {
                 email,
                 password
             });
-            
-            alert("Login successful");
             window.localStorage.setItem("currentUser", JSON.stringify(res.data.user));
             dispatch(getUser(res.data.user));
             navigate("/");
@@ -81,6 +82,7 @@ const Login = () => {
                         <Link to='/signup' className='font-bold p-2 underline m-2'>Sign up</Link>
                     </p>
                 </div>
+                {msg && <CartMessage message={msg} progressCount={100}decrement={2} steps={50}/>}
             </form>
         </div>
     )

@@ -4,20 +4,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import picnew from '../../assets/picenter.png';
 import axios from 'axios';
 import { newRequest } from './newRequest';
+import CartMessage from '../cart/CartMsg';
 
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userName, setUserName] = useState("");
+    const [imagePreview,setImagePreview] = useState("");
+    const [image,setImage] = useState(null);
+
     const [showPassword, setShowPassword] = useState(false);
     
     const [nameError, setNameError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [imageError, setImageError] = useState("");
-
-    const [image, setImage] = useState({});
+    const [msg, setMsg] = useState("");
     const navigate = useNavigate();
 
     const isPasswordVisible = () => {
@@ -26,6 +29,7 @@ const SignUp = () => {
 
     const handleImage = async (e) => {
         const file = e.target.files[0];
+        setImage(file)
         if (!file) {
             setImageError('Please upload a file');
             return; // Return early if no file is selected
@@ -34,7 +38,7 @@ const SignUp = () => {
             const reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onloadend = () => {
-             setImage(reader.result)
+             setImagePreview(reader.result)
             }
             setImageError(""); 
           }
@@ -49,12 +53,11 @@ const SignUp = () => {
         setPasswordError("");
 
         try {
-            const formData = {};
-            formData.name = userName;
-            formData.email = email;
-            formData.password = password;
-            formData.avatar = image;
-            console.log(formData)
+            const formData = new FormData();
+            formData.append('name',userName);
+            formData.append('email',email);
+            formData.append('password', password);
+            formData.append('avatar', image);
 
             if (!userName) {
                 setNameError("Please enter your name");
@@ -67,11 +70,15 @@ const SignUp = () => {
             if (!password) {
                 setPasswordError("Please enter your password");
             }
+            
+            if (!image) {
+                setImageError("Please enter image");
+            }
 
             if (userName && email && password) {
+                setMsg("Wait few seconds !")
                 // Proceed with registration
                 await newRequest.post("/register", formData);
-                alert("Signed up successfully");
                 navigate("/login");
             }
 
@@ -130,8 +137,9 @@ const SignUp = () => {
                     <p>Already have an account!! Click here
                         <Link to='/login' className='font-bold p-2 underline m-2'>Log in</Link>
                     </p>
-                    {image && <img src={image} alt="" className='h-32 object-contain' />}
+                    {image && <img src={imagePreview} alt="" className='h-32 object-contain' />}
                 </div>
+                {msg && <CartMessage message={msg}progressCount={100}decrement={1} steps={100} />}
             </form>
         </div>
     )

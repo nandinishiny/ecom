@@ -24,11 +24,11 @@ const PaymentComponent = ({handleOrder}) => {
                 description: " Transaction Details",
                 image: "https://www.simicart.com/blog/wp-content/uploads/eCommerce-logo-1.jpg",
                 order_id:order.id , //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                callback_url: "http://localhost:3000/razorpay-callback",
+                callback_url: "http://localhost:3000/api/v1/paymentverification",
                 prefill: {
                     name: user.data.user.name,
                     email: user.data.user.email,
-                    contact: "6304447577"
+                    contact: "9191919191"
                 },
                 notes: {
                     address: "Razorpay Corporate Office"

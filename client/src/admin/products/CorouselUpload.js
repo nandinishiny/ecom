@@ -1,31 +1,54 @@
+//this component didn't included in project.
+
+
+
+
+
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { newRequest } from '../../components/userAuth/newRequest';
 
 const CorouselUpload = () => {
   const [name,setName]= useState('')
-  const [image,setImage]= useState('')
+  const [images,setImages]= useState([])
+  const [imagePreviews,setImagePreviews]= useState([])
 
-    const handleImage = (e)=> {
-      let file = e.target.files[0];
-  
-      if (file) {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend = () => {
-         setImage(reader.result)
-        }
-      }
+
+  const handleImage = async (e) => {
+    e.preventDefault();
+    const files = Array.from(e.target.files);
+    setImages(files);
+    console.log(files)
+
+    const arr = [];
+    for (const item of files) {
+        const reader = new FileReader();
+        reader.readAsDataURL(item);
+
+        reader.onload = () => {
+            arr.push(reader.result);
+
+            // Update imagePreviews after all images are processed
+            if (arr.length === files.length) {
+                setImagePreviews(arr);
+            }
+        };
     }
+};
     const handleSubmit = async(e) => {
       e.preventDefault();
-      const formData = {
-        name:name,
-        image:image
+      const formData = new FormData();
+      for (const file of images) {
+        formData.append('images', file); 
       }
+      formData.append('name', name); 
       console.log(formData)
       try {
-        const response = await newRequest.post('/corousel', formData);
+        const response = await newRequest.post('/corousel', formData,{
+          headers: {
+            'Content-Type': 'multipart/form-data' // Set the correct content type
+          }});
     
         console.log(response.data);
       } catch (error) {
@@ -56,6 +79,8 @@ const CorouselUpload = () => {
             <input
               type="file"
               id="images"
+              multiple
+              name="images"
               onChange={handleImage}
               className="w-full"
             />
@@ -67,7 +92,10 @@ const CorouselUpload = () => {
             Upload
           </button>
         </div>
-        {/* ... */}
+        {imagePreviews&& imagePreviews.map((item,index)=>{
+          return(<img src={item} alt="" key={index} />)
+        })}
+        
       </div>
     </div>
   );

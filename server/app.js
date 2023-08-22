@@ -15,7 +15,7 @@ mongoConnect().then(console.log(`connected successfully in app`)).catch((e)=>con
 
 
 const app = express();
-app.use(express.json());
+// app.use(express.json());
 app.use(bodyParser.json()); // for JSON-encoded bodies
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));

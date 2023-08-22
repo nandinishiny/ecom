@@ -33,7 +33,6 @@ import CheckoutPage from "./components/payments/CheckoutPage";
 import RatingStars from "./components/home/RatingStars";
 import ProductsShimmer from "./components/home/ProductsShimmer";
 import CorouselUpload from "./admin/products/CorouselUpload";
-import DummyData from "./components/DummyData";
 import 'react-toastify/dist/ReactToastify.css';
 import PaymentCallbackPage from "./components/payments/CallbackUrl";
 const App = ()=>{
@@ -152,11 +151,7 @@ export const AppRouter = createBrowserRouter([
             element:<CorouselUpload/>
             
         },
-        {
-            path:'/img',
-            element:<DummyData/>
-            
-        },
+        
         {
             path:'/order/:orderId',
             element:<PaymentCallbackPage/>

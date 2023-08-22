@@ -1,70 +1,27 @@
-import corouselModel from "../models/corouselModel.js";
+//This component didn't include in the project
+
+
 import cloudinary from "../utils/cloudinary.js";
-// export const uploadImage = async (req, res) => {
-//   let carouseldata= req.body
-//   console.log(carouseldata.name+"name")
-//     try {
-//         console.log("try")
-
-//         if(carouseldata.image){
-//             console.log("image is there")
-//             const cloudinaryres = await cloudinary.uploader.upload(carouseldata?.image, {
-//                 upload_preset: 'ecomandcohome',
-//             });
-            
-
-//             if(cloudinaryres){
-//                 console.log(cloudinaryres)
-//                 res.json({cres:cloudinaryres})
-//                 // carouseldata.image=cloudinaryres;
-//                 // const result = await corouselModel.create(carouseldata)
-//                 // if(result){
-//                 //     res.json({success:true,message:'your banner is added'})
-//                 // }else{
-//                 //     res.json({success:false,message:'some error occured '})
-//                 // }
-//             }
-//         }
-       
-
-//     } catch (error) {
-//         res.json({success:false,error})
-//     }
-  
-// };
+import fs from 'fs';
 
 export const uploadImage = async (req, res) => {
-    let carouseldata= req.body
-    console.log(carouseldata.name+"name")
-      try {
-          console.log("try")
   
-          if(carouseldata.image){
-              console.log("image is there")
-              const cloudinaryres = await cloudinary.uploader.upload(carouseldata?.image, {
-                  upload_preset: 'ecomandcohome',
-              });
-              
-  
-              if(cloudinaryres){
-                  console.log(cloudinaryres)
-                  res.json({cres:cloudinaryres})
-                  // carouseldata.image=cloudinaryres;
-                  // const result = await corouselModel.create(carouseldata)
-                  // if(result){
-                  //     res.json({success:true,message:'your banner is added'})
-                  // }else{
-                  //     res.json({success:false,message:'some error occured '})
-                  // }
-              }
-          }
-         
-  
-      } catch (error) {
-          res.json({success:false,error})
-      }
-    
-  };
-  
-  
+  try {
+      const productImages = req.files;
+      console.log(productImages)
 
+      const uploadPromises = productImages.map(async (image) => {
+          const imagePath = image.path;
+          const cloudinaryUploadResult = await cloudinary.uploader.upload(imagePath, {
+              upload_preset: 'ecomandcohome'
+          });
+          return cloudinaryUploadResult;
+      });
+
+      const cloudinaryResults = await Promise.all(uploadPromises);
+
+      res.json({ success: true, cloudinaryResults });
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};

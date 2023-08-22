@@ -1,13 +1,13 @@
 //this page is to send message when an element is added.
 import React, { useEffect, useState } from 'react';
 
-const CartMessage = ({ message }) => {
-  const [progress, setProgress] = useState(100);
+const CartMessage = ({ message,progressCount,decrement,steps }) => {
+  const [progress, setProgress] = useState(progressCount);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgress(prevProgress => prevProgress - 2);
-    }, 50);
+      setProgress(prevProgress => prevProgress - decrement);
+    }, steps);
 
     setTimeout(() => {
       clearInterval(timer);

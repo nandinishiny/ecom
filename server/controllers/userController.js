@@ -5,48 +5,42 @@ import catchAsyncErrors from "../middleware/catchAsync.js";
 import sendToken from "../utils/jwtToken.js";
 import sendEmail from "../utils/sendEmail.js";
 import cloudinary from "../utils/cloudinary.js";
+import fs from 'fs';
 
 export const registerUser = catchAsyncErrors(async(req,res,next)=>{
-    const {name,email,password,role}= req.body;
-    let {avatar} = req.body;
+    const {name,email,password}= req.body;
+    let avatarPath = req.file.path;
+    let avatar = {}
     const existingUser = await User.findOne({email});
     if(existingUser){
         return next(new ErrorHandler("User already exist ",500));
     }
      try {
-        if(avatar){
-            const cloudinaryres = await cloudinary.uploader.upload(avatar, {
+        if(avatarPath){
+            const cloudinaryres = await cloudinary.uploader.upload(avatarPath, {
                 upload_preset: 'ecomandcohome',
             });
             if(cloudinaryres){
-                avatar = {
+                 avatar = {
                     public_id:cloudinaryres.public_id,
                     url:cloudinaryres.url
                 }
             }
         }
-        const user = await User.create({name,email,password,role,avatar});
-        res.status(201).json({
-        success:true,
-        user
-        })
+        fs.unlink(avatarPath, (err) => {
+            if (err) {
+                console.error('Error while removing file:', err);
+            }
+        });
+        const user = await User.create({name,email,password,avatar});
+            res.status(201).json({
+                success:true,
+                user
+                });
     }
      catch (error) {
         res.json({success:false,error})
     }
-  
-
-//     const user = await User.create({name,email,password,role,avatar});
-//     // avatar:{
-//     //     public_id:"this is a sample id",
-//     //     url:"Profile pic url"                              
-//     // },
-    
-// res.status(201).json({
-//     success:true,
-//     user
-// })
-
 })
 
 
@@ -160,6 +154,7 @@ export const updateUserPassword = catchAsyncErrors(async(req,res,next)=>{
 })
 
 //update profile --by user --so he wants logged in
+//update profile --by user --so he wants logged in
 export const updateProfile=catchAsyncErrors(async(req,res,next)=>{
     // const newUserData={
     //     name:req.body.name,
@@ -176,6 +171,8 @@ export const updateProfile=catchAsyncErrors(async(req,res,next)=>{
         user
     })
 });
+
+
 //Get all users if admin want to see how many users are registered. --by admin
 export const getAllUser= catchAsyncErrors(async(req,res,next)=>{
     const users = await User.find();

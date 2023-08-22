@@ -2,39 +2,44 @@ import Product from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsync.js";
 import ApiFeatures from "../utils/apiFeatures.js";
+import cloudinary from "../utils/cloudinary.js";
+import fs from 'fs'
 
-//--admin route
-// export const createProduct = catchAsyncErrors( async(req,res,next)=>{
-//     req.body.user = req.user.id; //we are assigning the value "user":"user id"
-//     const product = await Product.create(req.body);
-//     res.status(201).json({
-//         success:true,
-//         product
-//     })
-
-    
-// });
 //admin route --edited
 export const createProduct = catchAsyncErrors( async(req,res,next)=>{
- 
-
-  let user = req.user.id; //we are assigning the value "user":"user id"
-  const {productName,description,price,category,stock,images,offer}=req.body.dataset
-  let data_to_be_upload={name:productName,description:description,price:price,category:category,stock:stock,images:images,user:user,offer:offer}
-  try {
-    const product = await Product.create(data_to_be_upload);
-    if(product){
-    res.status(201).json({
-        success:true,
-        product
-    })
-    }
-  } catch (error) {
-    res.json({success:false,error:error})
-  }
- 
-
+  const {name,description,price,category,stock,offer}=req.body;
+  const imagesArray = req.files;
   
+  const user = req.user.id;
+  const images = [];
+  const uploadPromises = imagesArray.map(async (image) => {
+    const cloudinaryUploadResult = await cloudinary.uploader.upload(image.path, {
+        upload_preset: 'ecomandcohome'
+    });
+    return cloudinaryUploadResult;
+    });
+    const cloudinaryResults = await Promise.all(uploadPromises);
+    for (const item of cloudinaryResults) {
+      images.push({ public_id:item.public_id,url:item.secure_url})
+    }
+    const data_to_be_upload = {name,description,price,category,stock,images,offer,user}
+    
+    for (const file of imagesArray) {
+      fs.unlinkSync(file.path); // Delete the image file synchronously
+    }
+    
+  
+    try {
+        const product = await Product.create(data_to_be_upload);
+        if(product){
+          res.status(201).json({
+            success:true,
+            product
+        })
+        }
+    } catch (error) {
+      res.status(401).json({success:false,error:error})
+    }  
 });
 
 
