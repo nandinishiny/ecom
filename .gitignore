@@ -3,4 +3,4 @@ client/node_modules
 client/.cache
 client/dist
 server/utils/cloudinary.js
-server/config
+server/config/.env
