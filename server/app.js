@@ -10,6 +10,7 @@ import orderRouter from "./routes/orderRoute.js";
 import bodyParser from "body-parser";
 import paymentRouter from "./routes/paymentRoute.js";
 import corouselRouter from "./routes/corouselRoute.js";
+import path from 'path'
 dotenv.config({path:"server/config/config.env"})
 mongoConnect().then(console.log(`connected successfully in app`)).catch((e)=>console.log(`the error occusrs ${e}`))
 
@@ -40,14 +41,17 @@ app.get('/razorpay-callback', (req, res) => {
   const orderId = req.body.orderId; // Example: Get the order ID from the callback data
 
   // Construct the orders page URL
-  const ordersPageUrl = `http://localhost1234/order/${orderId}`;
+  const ordersPageUrl = `${process.env.FRONTEND_URL}/order/${orderId}`;
+  console.log(process.env.FRONTEND_URL)
 
   // Send the orders page URL as part of the response
   res.json({ status: 'success', ordersPageUrl });
 });
-
-
-
+// //for production
+// app.use(express.static(path.join(__dirname,'../client/dist')))
+// app.get('*',function(req,res){
+//   res.sendFile(path.join(__dirname,'../client/dist/index.html'))
+// })
 //middleware for errors
 app.use(errorHandlerMiddleware);
 
