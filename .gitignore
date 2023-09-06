@@ -1,5 +1,4 @@
 node_modules
 client/node_modules
 client/.cache
-server/utils/cloudinary.js
 server/config/.env
