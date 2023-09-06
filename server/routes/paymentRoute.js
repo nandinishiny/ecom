@@ -5,6 +5,4 @@ const router = express.Router();
 router.post("/checkout",checkout);
 router.post("/paymentverification",paymentVerify);
 
-
-
 export default router;
