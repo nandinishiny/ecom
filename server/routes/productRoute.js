@@ -5,7 +5,8 @@ const router = express.Router();
 import {upload} from '../utils/multerFile.js'
 import multer from 'multer';
 
-router.post("/product/new",authorizedRoles("admin"),upload.array('images'),createProduct);
+router.post("/product/new",upload.array('images'),createProduct);
+// ,authorizedRoles("admin")
 // isAuthenticatedUser
 // router.post("/product/new",createProduct);
 router.get("/products",getAllProducts);
