@@ -1,4 +1,6 @@
 import { instance } from "../server.js"
+import dotenv from 'dotenv';
+dotenv.config({path:"server/config/config.env"})
 export const checkout = async(req,res)=>{
     const options = {
         amount: Number(req.body.amount)*100,  // amount in the smallest currency unit
