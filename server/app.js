@@ -21,7 +21,7 @@ app.use(bodyParser.json()); // for JSON-encoded bodies
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
-    origin: ['http://localhost:1234'],
+    origin: ['https://ecom-88hx.vercel.app/'],
     credentials: true
   }));
 app.use("/api/v1",productRouter);
@@ -42,7 +42,6 @@ app.get('/razorpay-callback', (req, res) => {
 
   // Construct the orders page URL
   const ordersPageUrl = `${process.env.FRONTEND_URL}/order/${orderId}`;
-  console.log(process.env.FRONTEND_URL)
 
   // Send the orders page URL as part of the response
   res.json({ status: 'success', ordersPageUrl });

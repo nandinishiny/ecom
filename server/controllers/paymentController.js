@@ -11,8 +11,7 @@ export const checkout = async(req,res)=>{
       })
 }
 export const paymentVerify = (req,res)=>{
-  console.log(DB_URI)
   // res.status(200).send('Payment verification successful. Redirecting...');
-  res.redirect('${DB_URI}/payment/success');
+  res.redirect('${FRONTEND_URL}/payment/success');
   // Include a script to redirect to your frontend page
 }
