@@ -21,7 +21,7 @@ app.use(bodyParser.json()); // for JSON-encoded bodies
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
-    origin: ['https://ecom-88hx.vercel.app/'],
+    origin: ['https://ecom-88hx.vercel.app'],
     credentials: true
   }));
 app.use("/api/v1",productRouter);
