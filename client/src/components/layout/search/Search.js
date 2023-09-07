@@ -17,7 +17,7 @@ const Search = () => {
   }, []);
 
   const getProducts = async () => {
-    const data = await fetch(`http://localhost:3000/api/v1/products?keyword=${keyword}`);
+    const data = await fetch(`https://pleasebuy.onrender.com/api/v1/products?keyword=${keyword}`);
     const jsonData = await data.json();
     setSearchProducts(jsonData.products);
   }

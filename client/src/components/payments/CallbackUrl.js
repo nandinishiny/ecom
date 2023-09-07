@@ -7,7 +7,7 @@ const PaymentCallbackPage = () => {
     // Simulate a callback response
     const callbackResponse = {
       status: 'success',
-      ordersPageUrl: `http://localhost1234/order/${orderId}`, // Example URL
+      ordersPageUrl: `https://pleasebuy.onrender.com/order/${orderId}`, // Example URL
     };
 
     // Handle the callback response and set the orders page URL

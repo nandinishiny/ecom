@@ -5,7 +5,6 @@ const SearchPage = () => {
     const [search,setSearch] = useState("");
     const navigate = useNavigate();
     const handleKeyUp = (e)=>{
-        console.log(e)
         if (e.key === 'Enter') {
             handleSearch(); // Trigger button click on Enter key press
           }

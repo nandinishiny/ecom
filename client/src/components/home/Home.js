@@ -12,7 +12,7 @@ const Home = () => {
   }, []);
 
   const getProducts = async () => {
-    const data = await fetch(`http://localhost:3000/api/v1/products`);
+    const data = await fetch(`https://pleasebuy.onrender.com/api/v1/products`);
     const jsonData = await data.json();
     dispatch(displayProducts(jsonData.products));
   }

@@ -10,13 +10,13 @@ router.post("/login",loginUser);
 router.get("/logout",logoutUser);
 router.post("/password/forgot",forgotPassword);
 router.put("/password/reset/:token",resetPassword);
-router.get("/me",isAuthenticatedUser,upload.single('avatar'),getUserDetails);
-router.put("/password/update",isAuthenticatedUser,updateUserPassword);
-router.put("/me/update",isAuthenticatedUser,updateProfile);
-router.get("/admin/users",isAuthenticatedUser,authorizedRoles('admin'),getAllUser);
-router.get("/admin/user/:id",isAuthenticatedUser,authorizedRoles('admin'),getSingleUser);
-router.put("/admin/user/:id",isAuthenticatedUser,authorizedRoles('admin'),updateUserRole);
-router.delete("/admin/user/:id",isAuthenticatedUser,authorizedRoles('admin'),deleteUser);
+router.get("/me",upload.single('avatar'),getUserDetails);//1
+router.put("/password/update",updateUserPassword);//2
+router.put("/me/update",updateProfile);//3 isAuthenticatedUser
+router.get("/admin/users",authorizedRoles('admin'),getAllUser);//4
+router.get("/admin/user/:id",authorizedRoles('admin'),getSingleUser);//5
+router.put("/admin/user/:id",authorizedRoles('admin'),updateUserRole);//6
+router.delete("/admin/user/:id",authorizedRoles('admin'),deleteUser);//7
 
 
 

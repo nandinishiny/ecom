@@ -37,7 +37,7 @@ const ProductDetails = () => {
 
     const getSingleItemDetails = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/v1/product/${id}`);
+          const response = await fetch(`https://pleasebuy.onrender.com/api/v1/product/${id}`);
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }

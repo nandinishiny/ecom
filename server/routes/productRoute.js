@@ -5,16 +5,17 @@ const router = express.Router();
 import {upload} from '../utils/multerFile.js'
 import multer from 'multer';
 
-router.post("/product/new",isAuthenticatedUser,authorizedRoles("admin"),upload.array('images'),createProduct);
+router.post("/product/new",authorizedRoles("admin"),upload.array('images'),createProduct);
+// isAuthenticatedUser
 // router.post("/product/new",createProduct);
 router.get("/products",getAllProducts);
-router.put("/product/:id",isAuthenticatedUser,updateProduct);
-router.delete("/product/:id",isAuthenticatedUser,deleteProduct);
+router.put("/product/:id",updateProduct);
+router.delete("/product/:id",deleteProduct);
 // router.get("/product/:id",isAuthenticatedUser,getSingleProduct);
 router.get("/product/:id",getSingleProduct);
-router.put("/review",isAuthenticatedUser,createProductReview);
+router.put("/review",createProductReview);
 router.get("/reviews",getProductReviews);//get all reviews of a product
-router.delete("/reviews",isAuthenticatedUser,deleteReview);//delete a product review
+router.delete("/reviews",deleteReview);//delete a product review
 
 
 

@@ -24,7 +24,7 @@ const PaymentComponent = ({handleOrder}) => {
                 description: " Transaction Details",
                 image: "https://www.simicart.com/blog/wp-content/uploads/eCommerce-logo-1.jpg",
                 order_id:order.id , //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-                callback_url: "http://localhost:3000/api/v1/paymentverification",
+                callback_url: "https://pleasebuy.onrender.com/api/v1/paymentverification",
                 prefill: {
                     name: user.data.user.name,
                     email: user.data.user.email,
